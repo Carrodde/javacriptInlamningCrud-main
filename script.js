@@ -29,10 +29,10 @@ searchPlayer.addEventListener("input", function () {
   const searchFor = searchPlayer.value.toLowerCase();
   for (let i = 0; i < players.data.length; i++) {
     // TODO add a matches function
-    if (players[i].matches(searchFor)) {
-      players[i].visible = true;
+    if (players.data[i].matches(searchFor)) {
+      players.data[i].visible = true;
     } else {
-      players[i].visible = false;
+      players.data[i].visible = false;
     }
   }
   updateTable();
