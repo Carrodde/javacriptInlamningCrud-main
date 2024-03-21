@@ -52,7 +52,7 @@ let editingPlayer = null;
 
 const onClickPlayer = function (event) {
   const htmlElementetSomViHarKlickatPa = event.target;
-  console.log(htmlElementetSomViHarKlickatPa.dataset.stefansplayerid);
+
   const player = players.data.find(
     (p) => p.id == htmlElementetSomViHarKlickatPa.dataset.stefansplayerid
   );
@@ -97,7 +97,6 @@ closeDialog.addEventListener("click", async (ev) => {
 
   players = await fetchPlayers();
   updateTable();
-  MicroModal.close("modal-1");
 });
 
 btnAdd.addEventListener("click", () => {
