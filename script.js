@@ -27,7 +27,7 @@ console.log(players);
 
 searchPlayer.addEventListener("input", function () {
   const searchFor = searchPlayer.value.toLowerCase();
-  for (let i = 0; i < players.length; i++) {
+  for (let i = 0; i < players.data.length; i++) {
     // TODO add a matches function
     if (players[i].matches(searchFor)) {
       players[i].visible = true;
@@ -133,45 +133,6 @@ const updateTable = function () {
 
     allPlayersTBody.appendChild(tr);
   });
-  for (let i = 0; i < players.length; i++) {
-    // hrmmm you do foreach if you'd like, much nicer!
-    if (players[i].visible == false) {
-      continue;
-    }
-    let tr = document.createElement("tr");
-
-    tr.appendChild(createTableTdOrTh("th", players[i].name));
-    tr.appendChild(createTableTdOrTh("td", players[i].jersey));
-    tr.appendChild(createTableTdOrTh("td", players[i].position));
-    tr.appendChild(createTableTdOrTh("td", players[i].team));
-
-    let td = document.createElement("td");
-    let btn = document.createElement("button");
-    btn.textContent = "EDIT";
-    btn.dataset.stefansplayerid = players[i].id;
-    td.appendChild(btn);
-    tr.appendChild(td);
-
-    btn.addEventListener("click", onClickPlayer);
-
-    // btn.addEventListener("click",function(){
-    //       alert(players[i].name)
-    //       //                      detta funkar fast med sk closures = magi vg
-    // })
-
-    allPlayersTBody.appendChild(tr);
-  }
-
-  // innerHTML och backticks `
-  // Problem - aldrig bra att bygga strängar som innehåller/kan innehålla html
-  //    injection
-  // for(let i = 0; i < players.length;i++) { // hrmmm you do foreach if you'd like, much nicer!
-  //                                         // I will show you in two weeks
-  //                                         //  or for p of players
-  //     let trText = `<tr><th scope="row">${players[i].name}</th><td>${players[i].jersey}</td><td>${players[i].position}</td><td>${players[i].team}</td></tr>`
-  //     allPlayersTBody.innerHTML += trText
-  // }
-  // createElement
 };
 
 updateTable();
