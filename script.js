@@ -2,6 +2,9 @@ const allPlayersTBody = document.querySelector("#allPlayers tbody");
 const searchPlayer = document.getElementById("searchPlayer");
 const btnAdd = document.getElementById("btnAdd");
 const closeDialog = document.getElementById("closeDialog");
+const nameCat = document.getElementById("nameCat");
+const jerseyCat = document.getElementById("jerseyCat");
+const positionCat = document.getElementById("positionCat");
 
 function Player(id, name, jersey, position) {
   this.id = id;
@@ -18,8 +21,15 @@ function Player(id, name, jersey, position) {
   };
 }
 
+let currentSortCol = "id";
+let currentSortOrder = "asc";
+let currentSearchText = "";
+let currentPageNo = 1;
+let currentPageSize = 20;
+
 async function fetchPlayers() {
-  return await (await fetch("http://localhost:3000/getAll")).json();
+  let url = `http://localhost:3000/getAll?sortBy=${currentSortCol}&sortOrder=${currentSortOrder}`;
+  return await (await fetch(url)).json();
 }
 
 let players = await fetchPlayers();
@@ -37,6 +47,26 @@ searchPlayer.addEventListener("input", function () {
   }
   updateTable();
 });
+
+nameCat.addEventListener("click", () => {
+  sortHandler("name");
+});
+jerseyCat.addEventListener("click", () => {
+  sortHandler("jersey");
+});
+positionCat.addEventListener("click", () => {
+  sortHandler("position");
+});
+
+function sortHandler(category) {
+  if (currentSortCol === category) {
+    currentSortOrder = currentSortOrder === "asc" ? "desc" : "asc";
+  } else {
+    currentSortCol = category;
+    currentSortOrder = "asc";
+  }
+  updateTable();
+}
 
 const createTableTdOrTh = function (elementType, innerText) {
   let element = document.createElement(elementType);
@@ -93,10 +123,9 @@ closeDialog.addEventListener("click", async (ev) => {
     body: JSON.stringify(o),
   });
 
-  let json = await response.json();
-
   players = await fetchPlayers();
   updateTable();
+  MicroModal.close("modal-1");
 });
 
 btnAdd.addEventListener("click", () => {
@@ -108,7 +137,9 @@ btnAdd.addEventListener("click", () => {
   MicroModal.show("modal-1");
 });
 
-const updateTable = function () {
+const updateTable = async function () {
+  let players = await fetchPlayers();
+
   allPlayersTBody.innerHTML = "";
 
   players.data.forEach((player) => {

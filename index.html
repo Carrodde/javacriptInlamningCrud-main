@@ -11,6 +11,10 @@
       href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css"
     />
     <link rel="stylesheet" href="custom.css" />
+    <script
+      src="https://kit.fontawesome.com/ee781b796e.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
 
   <body>
@@ -40,16 +44,30 @@
         <table role="grid" id="allPlayers">
           <thead>
             <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Jersey</th>
-              <th scope="col">Position</th>
-              <th scope="col">Team</th>
+              <th scope="col" id="nameCat" class="cat">
+                Name <i class="fa-solid fa-sort"></i>
+              </th>
+              <th scope="col" id="jerseyCat" class="cat">
+                Jersey <i class="fa-solid fa-sort"></i>
+              </th>
+              <th scope="col" id="positionCat" class="cat">
+                Position <i class="fa-solid fa-sort"></i>
+              </th>
             </tr>
           </thead>
           <tbody>
             <!-- <tr data-id="1"><th scope="row">Peter Forsberg</th><td>21</td><td>Forward</td><td>Colorado</td></tr><tr data-id="2"><th scope="row">Mats Sundin</th><td>13</td><td>Forward</td><td>Toronto</td></tr><tr data-id="3"><th scope="row">Niklas Lidström</th><td>5</td><td>Defence</td><td>Detroit</td></tr><tr data-id="4"><th scope="row">Mikko Rantanen</th><td>96</td><td>Forward</td><td>Colorado</td></tr><tr data-id="5"><th scope="row">Jack Johnson</th><td>3</td><td>Defence</td><td>Colorado</td></tr> -->
           </tbody>
         </table>
+        <nav aria-label="...">
+          <ul class="pagination" id="pager">
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item active" aria-current="page">
+              <a class="page-link" href="#">2</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+          </ul>
+        </nav>
         <br />
 
         <hr />
