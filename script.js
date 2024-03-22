@@ -94,9 +94,7 @@ function createPager(totalPages, pageNo) {
     li.appendChild(a);
     a.addEventListener("click", async (e) => {
       e.preventDefault();
-      console.log("click");
       currentPageNo = i;
-      console.log(currentPageNo);
       await updateTable();
     });
     pager.appendChild(li);
@@ -133,7 +131,7 @@ closeDialog.addEventListener("click", async (ev) => {
   ev.preventDefault();
   let url = "";
   let method = "";
-  console.log(url);
+
   var o = {
     name: playerName.value,
     jersey: jersey.value,
