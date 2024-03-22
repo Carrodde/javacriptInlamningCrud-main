@@ -5,6 +5,13 @@ const closeDialog = document.getElementById("closeDialog");
 const nameCat = document.getElementById("nameCat");
 const jerseyCat = document.getElementById("jerseyCat");
 const positionCat = document.getElementById("positionCat");
+const pager = document.getElementById("pager");
+
+let currentSortCol = "id";
+let currentSortOrder = "asc";
+let currentSearchText = "";
+let currentPageNo = 1;
+const pageSize = 6;
 
 function Player(id, name, jersey, position) {
   this.id = id;
@@ -21,31 +28,34 @@ function Player(id, name, jersey, position) {
   };
 }
 
-let currentSortCol = "id";
-let currentSortOrder = "asc";
-let currentSearchText = "";
-let currentPageNo = 1;
-let currentPageSize = 20;
-
 async function fetchPlayers() {
-  let url = `http://localhost:3000/getAll?sortBy=${currentSortCol}&sortOrder=${currentSortOrder}`;
+  let offset = (currentPageNo - 1) * pageSize;
+  let url = `http://localhost:3000/getAll?sortBy=${currentSortCol}&sortOrder=${currentSortOrder}&search=${currentSearchText}&limit=6&page=${currentPageNo}&offset=${offset}`;
   return await (await fetch(url)).json();
 }
 
 let players = await fetchPlayers();
 console.log(players);
 
-searchPlayer.addEventListener("input", function () {
-  const searchFor = searchPlayer.value.toLowerCase();
-  for (let i = 0; i < players.data.length; i++) {
-    // TODO add a matches function
-    if (players.data[i].matches(searchFor)) {
-      players.data[i].visible = true;
-    } else {
-      players.data[i].visible = false;
-    }
-  }
+function debounce(cb, delay = 250) {
+  let timeout;
+
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      cb(...args);
+    }, delay);
+  };
+}
+
+const debouncedSearch = debounce((searchText) => {
+  currentSearchText = searchText.toLowerCase();
+  currentPageNo = 1;
   updateTable();
+});
+
+searchPlayer.addEventListener("input", function (event) {
+  debouncedSearch(event.target.value);
 });
 
 nameCat.addEventListener("click", () => {
@@ -66,6 +76,31 @@ function sortHandler(category) {
     currentSortOrder = "asc";
   }
   updateTable();
+}
+
+function createPager(totalPages, pageNo) {
+  pager.innerHTML = "";
+
+  for (let i = 1; i <= totalPages; i++) {
+    const li = document.createElement("li");
+    li.classList.add("page-item");
+    if (i == pageNo) {
+      li.classList.add("active");
+    }
+    const a = document.createElement("a");
+    a.href = "#";
+    a.innerText = i;
+    a.classList.add("page-link");
+    li.appendChild(a);
+    a.addEventListener("click", async (e) => {
+      e.preventDefault();
+      console.log("click");
+      currentPageNo = i;
+      console.log(currentPageNo);
+      await updateTable();
+    });
+    pager.appendChild(li);
+  }
 }
 
 const createTableTdOrTh = function (elementType, innerText) {
@@ -163,6 +198,7 @@ const updateTable = async function () {
 
     allPlayersTBody.appendChild(tr);
   });
+  createPager(players.totalPages, currentPageNo);
 };
 
 updateTable();
